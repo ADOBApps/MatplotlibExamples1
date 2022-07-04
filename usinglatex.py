@@ -27,6 +27,8 @@ plt.plot(x, w, "--",label = r'$\epsilon=log(\alpha^2+1)$')
 
 plt.xlabel(r'$\alpha$')
 plt.ylabel(r'$\beta$')
+
+# Set legend where will be our  latex text
 plt.legend(loc=0)
 plt.title("LaTeX and graphics")
 
