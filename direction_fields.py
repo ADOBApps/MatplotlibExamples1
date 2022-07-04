@@ -47,15 +47,17 @@ y = sympy.Function("y")
 
 #Def function
 f = y(x)**2 + x**2 -1
+sympy.Eq(y(x).diff(x), f)
 
 # Graph direction field
-fig, axes = plt.subplots(1, 1, figsize=(8, 6))
+fig, axes = plt.subplots(1, 1, figsize=(8, 6), sharex=True, sharey=True)
 campo_dir = plot_direction_field(x, y(x), f, ax=axes)
 
 # Condición inicial
 ics = {y(0): 0}
 
 # Resolviendo la ecuación diferencial
+#edo_sol = sympy.dsolve((y(x).diff(x)-f), hint='default', hints='default', simplify=True, ics=ics)
 edo_sol = sympy.dsolve(y(x).diff(x)-f, ics=ics)
 edo_sol
 
@@ -64,14 +66,12 @@ fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 # panel izquierdo - solución aproximada por Serie de potencias
 plot_direction_field(x, y(x), f, ax=axes[0])
 x_vec = np.linspace(-3, 3, 100)
-axes[0].plot(x_vec, sympy.lambdify(x, edo_sol.rhs.removeO())(x_vec),
-	'b', lw=2)
+axes[0].plot(x_vec, sympy.lambdify(x, edo_sol.rhs.removeO())(x_vec), 'b', lw=2)
 
 # panel derecho - Solución por método iterativo
 plot_direction_field(x, y(x), f, ax=axes[1])
 x_vec = np.linspace(-1, 1, 100)
-axes[1].plot(x_vec, sympy.lambdify(x, edo_sol.rhs.removeO())(x_vec),
-	'b', lw=2)
+axes[1].plot(x_vec, sympy.lambdify(x, edo_sol.rhs.removeO())(x_vec), 'b', lw=2)
 
 # Resolviendo la EDO en forma iterativa 
 edo_sol_m = edo_sol_p = edo_sol
@@ -82,13 +82,11 @@ for x0 in np.arange(1, 2., dx):
 	x_vec = np.linspace(x0, x0 + dx, 100)
 	ics = {y(x0): edo_sol_p.rhs.removeO().subs(x, x0)}
 	edo_sol_p = sympy.dsolve(y(x).diff(x) - f, ics=ics, n=6)
-	axes[1].plot(x_vec, sympy.lambdify(x, edo_sol_p.rhs.removeO())(x_vec),
-		'r', lw=2)
+	axes[1].plot(x_vec, sympy.lambdify(x, edo_sol_p.rhs.removeO())(x_vec), 'r', lw=2)
 
 # x negativos
 for x0 in np.arange(1, 5, dx):
 	x_vec = np.linspace(-x0-dx, -x0, 100)
 	ics = {y(-x0): edo_sol_m.rhs.removeO().subs(x, -x0)}
 	edo_sol_m = sympy.dsolve(y(x).diff(x) - f, ics=ics, n=6)
-	axes[1].plot(x_vec, sympy.lambdify(x, edo_sol_m.rhs.removeO())(x_vec),
-		'r', lw=2)
+	axes[1].plot(x_vec, sympy.lambdify(x, edo_sol_m.rhs.removeO())(x_vec), 'r', lw=2)
