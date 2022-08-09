@@ -1,15 +1,11 @@
-import numpy.polynomial.polynomial as poly
+import numpy as np
+import matplotlib.pyplot as plt
 
-p1 = [1, 1, -1]
-p2 = [2, 0, 0, 1]
+from mycontrollers.math.mypoly import ADOBpoly
 
-p = poly.polymul(p1, p2)
+# Original data
+x = [0, 1, 2, 3, 4, 5]
+y = [15, 10, 9, 6, 2, 0]
 
-print(p);
-
-r = poly.polyroots(p)
-print(r)
-
-x=2
-px = poly.polyval(x, p)
-print(px)
+if __name__ == "__main__":
+	ADOBpoly(x, y, 3, "mypoly", 10)
